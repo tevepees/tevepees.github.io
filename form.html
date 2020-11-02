@@ -1,0 +1,177 @@
+<html>
+
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <style>
+        .submit {
+            margin-left: 125px;
+            margin-top: 10px;
+        }
+
+        .label {
+            float: left;
+            width: 120px;
+        }
+
+        .infobox {
+            width: 120px;
+        }
+
+        .error {
+            color: red;
+            padding-left: 10px;
+        }
+
+        div {
+            padding: 5px;
+        }
+
+        .chkb {
+            margin-left: 125px;
+            margin-top: 10px;
+        }
+
+        .radiobtn {
+            margin-left: 125px;
+            margin-top: 10px;
+        }
+
+        .inputs {
+            background-color: cyan
+        }
+
+        fieldset {
+            border: 1px solid #888;
+        }
+
+        legend {
+            border: 1px solid #888;
+            background-color: cyan;
+            color: blue;
+            font-weight: bold;
+            padding: .5em
+        }
+    </style>
+
+<body>
+    <script>
+        $(document).ready(function () {
+            $('.error').hide();
+            $('.userid').focus(function () {
+                $(this).addClass('inputs');
+            });
+            $('.password').focus(function () {
+                $(this).addClass('inputs');
+            });
+            $('.emailadd').focus(function () {
+                $(this).addClass('inputs');
+            });
+            $('.fooderror').addClass('error');
+            $('.fooderror').hide();
+            $('.payerror').addClass('error');
+            $('.payerror').hide();
+            $('.submit').click(function (event) {
+                var data = $('.userid').val();
+                if (validate_userid(data)) {
+                    $('.userid').next().hide();
+                }
+                else {
+                    $('.userid').next().show();
+                }
+                data = $('.password').val();
+                var len = data.length;
+                if (len < 1) {
+                    $('.password').next().show();
+                }
+                else {
+                    $('.password').next().hide();
+                }
+                data = $('.emailadd').val();
+                if (valid_email(data)) {
+                    $('.emailadd').next().hide();
+                }
+                else {
+                    $('.emailadd').next().show();
+                }
+                var count = 0;
+                $('div').find(':checkbox').each(function () {
+                    if ($(this).is(':checked')) {
+                        count++;
+                    }
+                });
+                if (count == 0) {
+                    $('.fooderror').css({ 'margin-left': 250 }).show();
+                }
+                else {
+                    $('.fooderror').hide();
+                }
+                count = 0;
+                $('div').find(':radio').each(function () {
+                    if ($(this).is(':checked')) {
+                        count++;
+                    }
+                });
+                if (count == 0) {
+                    $('.payerror').css({ 'margin-left': 250 }).show();
+                }
+                else {
+                    $('.payerror').hide();
+                }
+                count = $('select option:selected').val();
+                if (count == 0) {
+                    $('.infobox').next().show();
+                }
+                else {
+                    $('.infobox').next().hide();
+                }
+                event.preventDefault();
+            });
+        });
+        function valid_email(email) {
+            var pattern = new RegExp(/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]+$/);
+            return pattern.test(email);
+        }
+        function validate_userid(uid) {
+            var pattern = new RegExp(/^[a-z0-9_]+$/);
+            return pattern.test(uid);
+        }
+    </script>
+
+    <form>
+        <fieldset>
+            <legend>Silahkan Isi Data Diri Anda</legend>
+            <div id="u"> <span class="label">Nama Pengguna</span><input type="text" class="userid" name="userid" /><span
+                    class="error"> Nama Pengguna hanya boleh berisikan angka, huruf, atau_(underscore)</span></div>
+            <div id="p"><span class="label">Password </span><input type="password" class="password"
+                    name="password" /><span class="error"> Password tidak boleh kosong</span></div>
+            <div><span class="label">Alamat Email </span><input type="text" class="emailadd" name="emailid" /><span
+                    class="error"> Invalid Alamat Email</span></div>
+        </fieldset>
+        <fieldset>
+            <div><span class="label">Pilih Orderan </span><br>
+                <input type="checkbox" id="Kodok" name="Kodok"value=5 class="chkb">Kodok IDR 1.000 <br>
+                <input type="checkbox" id="Ular" name="Ular" value=2 class="chkb">Ular IDR 1.500<br>
+                <input type="checkbox" id="Kadal" name="Kadal" value=1 class="chkb">Kadal IDR 2.000<br>
+                <input type="checkbox" id="Hiu" name="Hiu" value=3 class="chkb">Hiu Bakar IDR 2.500<br>
+                <span class="fooderror">Anda belum memilih makanan apapun</span></div>
+            <div><span class="label">Pilih Pembayaran</span><br>
+                <input type="radio" name="paymode" class="radiobtn" value="Debit BCA">Debit BCA<br>
+                <input type="radio" name="paymode" class="radiobtn" value="Debit BNI">Debit BNI<br>
+                <input type="radio" name="paymode" class="radiobtn" value="Debit BRI">Debit BRI<br>
+                <span class="payerror">Anda belum memilih metode pembayaran</span></div>
+        </fieldset>
+        <fieldset>
+            <div><span class="label">Negara</span><select id="Negara" class="infobox">
+                    <option value="0">Pilih negara</option>
+                    <option value="Zimbabwe">Zimbabwe</option>
+                    <option value="Israel Kingdom">Israel</option>
+                    <option value="Venezuela">Venezuela</option>
+                    <option value="Timor">Timor</option>
+                </select>
+        </fieldset>
+        <span class="error"> Please select the country</span></div>
+
+        <input class="submit" type="submit" value="Submit">
+    </form>
+</body>
+</head>
